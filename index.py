@@ -50,6 +50,7 @@ def text_to_handwritten(text, font_path):
         if(y<940):
             draw.text((x, y), line, font=font, fill="black")
             y+=33.5
+            
         else:
             # Save and display the image
             image.save(f"handwritten_text_{i}.png")
@@ -67,11 +68,11 @@ font_path = "Caveat-Regular.ttf"  # Replace with your handwriting font file
 # output_path = "handwritten_text.png"
 if text:
     i = text_to_handwritten(text, font_path)
+
     images =[]
     if (i==0):
         st.image("handwritten_text_0.png")
-    for a in range(i):
-        print(a)
+    for a in range(i+1):
         images.append(f"handwritten_text_{a}.png")
         st.image(images[a])
         

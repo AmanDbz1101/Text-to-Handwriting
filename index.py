@@ -64,10 +64,38 @@ def text_to_handwritten(text, font_path):
 text = st.text_area("Enter your text")
 font_path = "Caveat-Regular.ttf"  # Replace with your handwriting font file
 # output_path = "handwritten_text.png"
+if text:
+    i = text_to_handwritten(text, font_path)
+    images =[]
+    if (i==0):
+        st.image("handwritten_text_0.png")
+    for a in range(i):
+        print(a)
+        images.append(f"handwritten_text_{a}.png")
+        st.image(images[a])
+        
+if (i!=0):
+    # Open and convert all images to RGB
+    image_list = [Image.open(img).convert("RGB") for img in images]
 
-i = text_to_handwritten(text, font_path)
+    # Save all images into a single PDF
+    image_list[0].save("combined.pdf", save_all=True, append_images=image_list[1:])
+else:
+    # Convert to RGB 
+    image = Image.open("handwritten_text_0.png").convert("RGB")
 
-for a in range(i):
-    st.image(f"handwritten_text_{a}.png")
+    # Save the image as a PDF
+    image.save("combined.pdf", "PDF")
 
-st.button("Download")
+ 
+# PDF content (binary data)
+with open("combined.pdf", "rb") as pdf_file:  # Replace with your PDF file path
+    pdf_data = pdf_file.read()
+
+# Create a download button
+st.download_button(
+    label="Download PDF",
+    data=pdf_data,
+    file_name="Handwritten_text.pdf",  # Name of the file to be downloaded
+    mime="application/pdf"    # MIME type for PDFs
+)

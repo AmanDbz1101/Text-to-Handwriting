@@ -58,6 +58,7 @@ def text_to_handwritten(text, font_path):
             draw = ImageDraw.Draw(image)
             y=113
             i+=1
+    image.save(f"handwritten_text_{i}.png")
     return i
             
 
@@ -74,18 +75,18 @@ if text:
         images.append(f"handwritten_text_{a}.png")
         st.image(images[a])
         
-if (i!=0):
-    # Open and convert all images to RGB
-    image_list = [Image.open(img).convert("RGB") for img in images]
+    if (i!=0):
+        # Open and convert all images to RGB
+        image_list = [Image.open(img).convert("RGB") for img in images]
 
-    # Save all images into a single PDF
-    image_list[0].save("combined.pdf", save_all=True, append_images=image_list[1:])
-else:
-    # Convert to RGB 
-    image = Image.open("handwritten_text_0.png").convert("RGB")
+        # Save all images into a single PDF
+        image_list[0].save("combined.pdf", save_all=True, append_images=image_list[1:])
+    else:
+        # Convert to RGB 
+        image = Image.open("handwritten_text_0.png").convert("RGB")
 
-    # Save the image as a PDF
-    image.save("combined.pdf", "PDF")
+        # Save the image as a PDF
+        image.save("combined.pdf", "PDF")
 
  
 # PDF content (binary data)

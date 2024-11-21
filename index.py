@@ -42,27 +42,20 @@ def text_to_handwritten(text, font_path, output_path):
     font_width= 28
     font = ImageFont.truetype(font_path, font_width)
 
-    # Text and its bounding box
-    # bbox = draw.textbbox((0, 0), text, font=font, spacing = 10)
     max_width = 745# Width of the box
-    
     x=168
     y=113
     wrapped_lines = wrap_text(x, y,text, font, max_width, draw)
 
     for line in wrapped_lines:
-        draw.text((x, y), line, font=font, fill="black")
-        y+=33
-
-    # Draw the bounding box for visualization
-    # draw.rectangle(bbox, outline="red", width=2)
+        if(y<940):
+            draw.text((x, y), line, font=font, fill="black")
+            y+=33.5
 
     # Save and display the image
     image.save(output_path)
-    # image.show()
 
 text = st.text_area("Enter your text")
-# text = "hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello "
 font_path = "Caveat-Regular.ttf"  # Replace with your handwriting font file
 output_path = "handwritten_text.png"
 

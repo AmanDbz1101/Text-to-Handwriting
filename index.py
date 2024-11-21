@@ -30,12 +30,11 @@ def wrap_text(x, y, text, font, max_width, draw):
     return lines
 
 
-def text_to_handwritten(text, font_path, output_path):
+def text_to_handwritten(text, font_path):
     
 
     # Create an image
     image= Image.open('page_right.webp')
-    # image = Image.new('RGB', (1000, 800), 'white')
     draw = ImageDraw.Draw(image)
 
     # Load a font
@@ -46,19 +45,29 @@ def text_to_handwritten(text, font_path, output_path):
     x=168
     y=113
     wrapped_lines = wrap_text(x, y,text, font, max_width, draw)
-
+    i=0
     for line in wrapped_lines:
         if(y<940):
             draw.text((x, y), line, font=font, fill="black")
             y+=33.5
-
-    # Save and display the image
-    image.save(output_path)
+        else:
+            # Save and display the image
+            image.save(f"handwritten_text_{i}.png")
+            image= Image.open('page_right.webp')
+            
+            draw = ImageDraw.Draw(image)
+            y=113
+            i+=1
+    return i
+            
 
 text = st.text_area("Enter your text")
 font_path = "Caveat-Regular.ttf"  # Replace with your handwriting font file
-output_path = "handwritten_text.png"
+# output_path = "handwritten_text.png"
 
-text_to_handwritten(text, font_path, output_path)
+i = text_to_handwritten(text, font_path)
 
-st.image(output_path)
+for a in range(i):
+    st.image(f"handwritten_text_{a}.png")
+
+st.button("Download")

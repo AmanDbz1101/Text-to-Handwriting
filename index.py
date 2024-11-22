@@ -26,7 +26,7 @@ def wrap_text(x, y, text, font, max_width, draw):
     # Add the last line
     if current_line:
         lines.append(' '.join(current_line))
-
+        current_line = [word]
     return lines
 
 
@@ -34,7 +34,7 @@ def text_to_handwritten(text, font_path):
     
 
     # Create an image
-    image= Image.open('page_right.webp')
+    image= Image.open('page_right.jpg')
     draw = ImageDraw.Draw(image)
 
     # Load a font
@@ -43,21 +43,23 @@ def text_to_handwritten(text, font_path):
 
     max_width = 745# Width of the box
     x=168
-    y=113
+    y=112
     wrapped_lines = wrap_text(x, y,text, font, max_width, draw)
     i=0
     for line in wrapped_lines:
-        if(y<940):
+        if(y<945):
             draw.text((x, y), line, font=font, fill="black")
             y+=33.5
             
         else:
             # Save and display the image
             image.save(f"handwritten_text_{i}.png")
-            image= Image.open('page_right.webp')
+            image= Image.open('page_right.jpg')
             
             draw = ImageDraw.Draw(image)
-            y=113
+            y=112
+            draw.text((x, y), line, font=font, fill="black")
+            y+=33.5
             i+=1
     image.save(f"handwritten_text_{i}.png")
     return i
@@ -74,22 +76,16 @@ if text:
         images.append(f"handwritten_text_{a}.png")
         st.image(images[a])
         
-    if (i!=0):
-        # Open and convert all images to RGB
-        image_list = [Image.open(img).convert("RGB") for img in images]
+    # Open and convert all images to RGB
+    image_list = [Image.open(img).convert("RGB") for img in images]
 
-        # Save all images into a single PDF
-        image_list[0].save("combined.pdf", save_all=True, append_images=image_list[1:])
-    else:
-        # Convert to RGB 
-        image = Image.open("handwritten_text_0.png").convert("RGB")
+    # Save all images into a single PDF
+    image_list[0].save("combined.pdf", save_all=True, append_images=image_list[1:])
 
-        # Save the image as a PDF
-        image.save("combined.pdf", "PDF")
 
  
 # PDF content (binary data)
-with open("combined.pdf", "rb") as pdf_file:  # Replace with your PDF file path
+with open("combined.pdf", "rb") as pdf_file: 
     pdf_data = pdf_file.read()
 
 # Create a download button

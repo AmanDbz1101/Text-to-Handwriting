@@ -63,15 +63,13 @@ def text_to_handwritten(text, font_path):
     return i
             
 
-text = st.text_area("Enter your text")
+text = st.text_area("Enter your text", height=200)
 font_path = "Caveat-Regular.ttf"  # Replace with your handwriting font file
 # output_path = "handwritten_text.png"
 if text:
     i = text_to_handwritten(text, font_path)
 
     images =[]
-    if (i==0):
-        st.image("handwritten_text_0.png")
     for a in range(i+1):
         images.append(f"handwritten_text_{a}.png")
         st.image(images[a])
